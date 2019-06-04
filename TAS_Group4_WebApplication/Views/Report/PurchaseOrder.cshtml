@@ -1,0 +1,565 @@
+﻿
+@{
+    ViewBag.Title = "PurchaseOrder";
+    ViewData["username"] = Session["username"];
+    ViewData["status"] = Session["status"];
+    Layout = "~/Views/Dashboard/_LayoutDashboard.cshtml";
+
+    string PO = "0";
+}
+
+@{ if (ViewData["PO"] == null)
+    {
+        PO = "7007392288";
+    }
+    else
+    {
+        PO = ViewData["PO"].ToString();
+
+    }
+}
+
+<h2>PurchaseOrder</h2>
+
+<head>
+    <style>
+        td.details-control {
+            background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+        }
+    </style>
+    <!-- END CSS for this page -->
+</head>
+
+<head>
+    <title>Denchai TAS - Manager Dashboard</title>
+</head>
+
+<body class="adminbody">
+
+
+    <div id="main">
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- TOP BAR NAVIGATION -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <div class="headerbar">
+
+            <!-- LOGO -->
+            <div class="headerbar-left">
+                <a href='@Url.Action("DashboardManager", "Dashboard")' class="logo"><img alt="Logo" src="~/Content/vendor_dashboard/images/logo.png" /> <span> Admin @ViewData["username"]: @ViewData["status"] </span></a>
+            </div>
+
+            <nav class="navbar-custom">
+
+                <ul class="list-inline float-right mb-0">
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-question-circle"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small>Help and Support</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <p class="notify-details ml-0">
+                                    <b>Do you think who the fuck you are?</b>
+                                    <span>Contact Us</span>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a title="Clcik to visit Pike Admin Website" target="_blank"
+                               href="https://www.pikeadmin.com" class="dropdown-item notify-item notify-all">
+                                <i class="fa fa-link"></i> Visit Pike Neverdone Website
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-bell-o"></i><span class="notif-bullet"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small><span class="label label-danger pull-xs-right">5</span>Alerts</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar2.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Diew Koolpiruck</b>
+                                    <span>is checking your fucking work</span>
+                                    <small class="text-muted">now</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar3.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Sean</b>
+                                    <span>already checked your fucking work</span>
+                                    <small class="text-muted">12 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar4.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Pond</b>
+                                    <span>gave you full scores! HELL YEAH!</span>
+                                    <small class="text-muted">35 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a href="#" class="dropdown-item notify-item notify-all">
+                                View All Alerts
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <img src="~/Content/vendor_dashboard/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5 class="text-overflow"><small>Hello, admin</small> </h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="pro-profile.html" class="dropdown-item notify-item">
+                                <i class="fa fa-user"></i> <span>Profile</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <i class="fa fa-power-off"></i> <span>Logout</span>
+                            </a>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <i class="fa fa-external-link"></i> <span>Neverdone Admin</span>
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <ul class="list-inline menu-left mb-0">
+                    <li class="float-left">
+
+                        <!-- Side Bar Shrinker -->
+                        <button class="button-menu-mobile open-left">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                    </li>
+
+
+                    <!-- Date Picker-->
+                    <li class="float-left">
+                        <form class="form-inline" method="GET">
+
+                            <label for="searchPO" style="color:white">Enter Purchased Order Number : Now is </label>
+
+                            <input class="form-control" type="text" id="_po" name="po" value="Enter PO. number" style="margin-left:20px" />
+                            <button type="button" class="btn btn-primary" id="_submitpo" style="margin-left:20px" onclick="searchPO()">Submit</button>
+
+                        </form>
+                    </li>
+
+
+                </ul>
+
+
+            </nav>
+
+        </div>
+        <!-- End Navigation -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- SIDE BAR MENU
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- Left Sidebar -->
+        <div class="left main-sidebar">
+
+            <div class="sidebar-inner leftscroll">
+
+                <div id="sidebar-menu">
+
+                    <ul>
+
+                        <li class="submenu">
+                            <a class="active" href='@Url.Action("DashboardManager", "Dashboard")'>
+                                <i class="fa fa-fw fa-bars"></i><span> Dashboard </span>
+                            </a>
+                        </li>
+
+                        <!-- TODO : cshtml for all dashboards -->
+                        <li class="submenu">
+
+                            <a class="pro" href="#">
+                                <i class="fa fa-fw fa-area-chart"></i> <span> Charts </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a href='@Url.Action("DashboardOperator", "Dashboard")'>Operator</a></li>
+
+                                @if ((int)@ViewData["status"] == 2)
+                                {
+                                    <li><a href='@Url.Action("DashboardManager", "Dashboard")'>Manager</a></li>
+                                }
+
+                            </ul>
+
+                        </li>
+
+
+                        <!-- TODO : cshtml for all financial statements -->
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-file-text-o"></i> <span> Report </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a class="active" href='@Url.Action("JournalTransaction", "Report", new { id = @ViewData["status"]})'>Journal Transaction</a></li>
+                                <li><a class="active" href='@Url.Action("GeneralLedger", "Report", new { id = @ViewData["status"]})'>General Ledger</a></li>
+                                <li><a class="active" href='@Url.Action("IncomeStatement", "Report", new { id = @ViewData["status"]})'>Income Statement</a></li>
+                                <li><a class="active" href='@Url.Action("ReconcilationSheet", "Report", new { id = @ViewData["status"]})'>Reconcilation Sheet</a></li>
+                                <li><a class="active" href='@Url.Action("InventoryStockCard", "Report", new { id = @ViewData["status"]})'>Inventory Stock Card</a></li>
+                                <li><a class="active" href='@Url.Action("PurchaseOrder", "Report", new { id = @ViewData["status"]})'>Purchase Order</a></li>
+                                <li><a class="active" href='@Url.Action("Invoice", "Report", new { id = @ViewData["status"]})'>Invoice</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href='@Url.Action("DashboardManager", "Dashboard")'>
+                                <i class="fa fa-truck"></i><span> Truck History</span>
+                            </a>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-image"></i> <span> Images and Galleries </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="media-fancybox.html">
+                                        <span class="label radius-circle bg-danger float-right">cool</span> Fancybox
+                                    </a>
+                                </li>
+                                <li><a href="media-masonry.html">Masonry</a></li>
+                                <li><a href="media-lightbox.html">Lightbox</a></li>
+                                <li><a href="media-owl-carousel.html">Owl Carousel</a></li>
+                                <li><a href="media-image-magnifier.html">Image Magnifier</a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+
+        <!-- End Sidebar -->
+        @*//........................................................................................................................................................................................................
+            //.DDDDDDDDDDDDDDD............OOOOOOOOOOO............... TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII......SSSSSSSSSSS.................SSSSSSSSSSS......SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDD........OOOOOOOOOOOOOOO............. TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII.....SSSSSSSSSSSSS...............SSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDDD......OOOOOOOOOOOOOOOOO............ TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII....SSSSSSSSSSSSSSS.............SSSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDDD.....OOOOOOOOOOOOOOOOOOO........... TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSSSSSSS............SSSSSSSSSSSSSSSS...SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDD....DDDDDDDDD....OOOOOOOOO.OOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSS.SSSSSSSS........... SSSSSSS.SSSSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD......DDDDDDD...OOOOOOOO.....OOOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSS.....SSSSSS........... SSSSS.....SSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD.......DDDDDDD..OOOOOOO.......OOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSS..................... SSSSSS.............SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSS................... SSSSSSSS...........SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSS................ SSSSSSSSSSS........SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOOO.........OOOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII....SSSSSSSSSSSSS...............SSSSSSSSSSSSSS.....SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOO...........OOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII.....SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS....SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOO...........OOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII......SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS...SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOOO.........OOOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII........SSSSSSSSSSSSS...............SSSSSSSSSSSSS..SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...........SSSSSSSSSS...................SSSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..............SSSSSSS.....................SSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD.......DDDDDDD..OOOOOOO.......OOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..ISSSSS.......SSSSSS......... SSSS.......SSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD......DDDDDDD...OOOOOOOO.....OOOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..ISSSSSS......SSSSSS.......... SSSSS......SSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD....DDDDDDDDD....OOOOOOOOO.OOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSS..SSSSSSSS.......... SSSSSSS..SSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDDD.....OOOOOOOOOOOOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSSSSSSSS.......... SSSSSSSSSSSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDDD......OOOOOOOOOOOOOOOOO..................TTTTTT.......HHHHHH.......HHHHHH...IIIII....SSSSSSSSSSSSSSSS............SSSSSSSSSSSSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDD........OOOOOOOOOOOOOOO...................TTTTTT.......HHHHHH.......HHHHHH...IIIII.....SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDD............OOOOOOOOOOO.....................TTTTTT.......HHHHHH.......HHHHHH...IIIII......SSSSSSSSSSS.................SSSSSSSSSSSS.....SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //........................................................................................................................................................................................................*@
+        <div class="content-page">
+
+            <!-- Start content -->
+            <div class="content">
+
+                <div class="container-fluid">
+
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="breadcrumb-holder">
+                                <h1 class="main-title float-left">PURCHASED ORDER</h1>
+                                <ol class="breadcrumb float-right">
+                                    <li class="breadcrumb-item">Home</li>
+                                    <li class="breadcrumb-item active">Purchase Order</li>
+                                </ol>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+
+
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h3><i class="fa fa-table"></i> Denchai Purchased Order</h3>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div class="container">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="invoice-title text-center mb-3">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="invoice-title text-center mb-3">
+                                                                <h1>PTT PCL (Denchai Oil Terminal)</h1>
+                                                                <h2>Purchased Order</h2>
+                                                                <h5><strong>Date:</strong> March, 2019</h5>
+                                                                4 Mu 6, Rotfai Road, Denchai,Denchai District, Phrae 54110
+                                                            </div>
+
+                                                            <hr />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+
+                                                    </div>
+                                                    <div class="col-md-6 float-right text-right">
+                                                        <h5>Purchased Order Number:</h5>
+                                                        <address>
+                                                            @ViewData["PO"]<br><br>
+                                                        </address>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+
+                                                    </div>
+                                                    <div class="col-md-6 float-right text-right">
+                                                        <h5>Payment Number:</h5>
+                                                        <address>
+                                                            @ViewData["SHIPMENT_NUMBER"]<br><br>
+                                                        </address>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+
+                                                    </div>
+                                                    <div class="col-md-6 float-right text-right">
+                                                        <h5>Date:</h5>
+                                                        <address>
+                                                            @ViewData["DATE_TIME"]<br><br>
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                                @* LEFT *@
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5>CustomerID:</h5>
+                                                        <address>
+                                                            @ViewData["CUSTOMER_ID"]<br><br>
+                                                        </address>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5>Tax Payer ID:</h5>
+                                                        <address>
+                                                            @ViewData["TAX_PAYER_ID"]<br><br>
+                                                        </address>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title"><strong>Summary</strong></h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td><strong>Item</strong></td>
+                                                                        <td class="text-center"><strong>Price/Litre</strong></td>
+                                                                        <td class="text-center"><strong>Quantity</strong></td>
+                                                                        <td class="text-right"><strong>Amount</strong></td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                                                    <tr>
+                                                                        <td>@ViewData["GAS_TYPE"]</td>
+                                                                        <td class="text-center">@ViewData["GAS_PRICE"]</td>
+                                                                        <td class="text-center">@ViewData["VOLUME_FILLED"]</td>
+                                                                        <td class="text-right">@ViewData["GAS_AMOUNT"]</td>
+                                                                    </tr>
+
+
+                                                            
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- end card body -->
+
+                            </div><!-- end card-->
+
+                        </div><!-- end col-->
+
+                    </div><!-- end row-->
+
+
+
+                </div>
+                <!-- END container-fluid -->
+
+            </div>
+            <!-- END content -->
+
+        </div>
+        <!-- END content-page -->
+
+        <footer class="footer">
+            <span class="text-right">
+                Copyright <a target="_blank" href="#">Your Website</a>
+            </span>
+            <span class="float-right">
+                Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+            </span>
+        </footer>
+
+    </div>
+
+    <!-- END main -->
+
+
+
+    <div>
+        <footer class="footer">
+            <span class="text-right">
+                Copyright <a target="_blank" href="#">Neverdone Company</a>
+            </span>
+            <span class="float-right">
+                Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Neverdone</b></a>
+            </span>
+        </footer>
+
+    </div>
+    <!-- END main -->
+    <!-- ------------------------------------------------------------------------------ -->
+    <!-- JAVASCRIPT -->
+    <!-- ------------------------------------------------------------------------------ -->
+
+    <script src="~/Content/vendor_dashboard/js/modernizr.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/moment.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/popper.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/bootstrap.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/detect.js"></script>
+    <script src="~/Content/vendor_dashboard/js/fastclick.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.blockUI.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.nicescroll.js"></script>
+
+    <!-- App js -->
+    <script src="~/Content/vendor_dashboard/js/pikeadmin.js"></script>
+
+    <!-- BEGIN Java Script for this page -->
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        // START CODE FOR BASIC DATA TABLE
+        $(document).ready(function () {
+            $('#example1').DataTable();
+        });
+        // END CODE FOR BASIC DATA TABLE
+        // END CODE Individual column searching (text inputs) DATA TABLE
+    </script>
+
+    <script>
+        var searchPO = function () {
+            PO = document.getElementById("_po").value;
+            alert(PO);
+
+            window.location.href = "PurchaseOrder/" + id + "/" + PO // need fix
+            //GET
+        }
+    </script>
+    <!-- END Java Script for this page -->
+</body>

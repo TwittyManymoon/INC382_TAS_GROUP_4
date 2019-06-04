@@ -1,0 +1,649 @@
+﻿
+@{
+    ViewBag.Title = "DashboardManager";
+    ViewData["username"] = Session["username"];
+    ViewData["status"] = Session["status"];
+    Layout = "~/Views/Dashboard/_LayoutDashboard.cshtml";
+
+    // Date Selector
+    string week = "0";
+}
+
+@{  if (ViewData["Week"] == null) {
+        week = "1";
+    }
+    else
+    {
+        week = ViewData["Week"].ToString();
+    }
+}
+
+
+<head>
+    <title>Denchai TAS - Manager Dashboard</title>
+</head>
+
+<body class="adminbody">
+
+
+    <div id="main">
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- TOP BAR NAVIGATION -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <div class="headerbar">
+
+            <!-- LOGO -->
+            <div class="headerbar-left">
+                <a href='@Url.Action("DashboardManager", "Dashboard")' class="logo"><img alt="Logo" src="~/Content/vendor_dashboard/images/logo.png" /> <span> Admin @ViewData["username"]: @ViewData["status"] </span></a>
+            </div>
+
+            <nav class="navbar-custom">
+
+                <ul class="list-inline float-right mb-0">
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-question-circle"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small>Help and Support</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <p class="notify-details ml-0">
+                                    <b></b>
+                                    <span>Contact Us</span>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a title="Clcik to visit Pike Admin Website" target="_blank"
+                               href="https://www.pikeadmin.com" class="dropdown-item notify-item notify-all">
+                                <i class="fa fa-link"></i> Visit Pike Neverdone Website
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-bell-o"></i><span class="notif-bullet"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small><span class="label label-danger pull-xs-right">5</span>Alerts</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar2.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Diew Koolpiruck</b>
+                                    <span>is checking your  work</span>
+                                    <small class="text-muted">now</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar3.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Sean</b>
+                                    <span>already checked your  work</span>
+                                    <small class="text-muted">12 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar4.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Pond</b>
+                                    <span>gave you full scores! HELL YEAH!</span>
+                                    <small class="text-muted">35 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a href="#" class="dropdown-item notify-item notify-all">
+                                View All Alerts
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <img src="~/Content/vendor_dashboard/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5 class="text-overflow"><small>Hello, admin</small> </h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="pro-profile.html" class="dropdown-item notify-item">
+                                <i class="fa fa-user"></i> <span>Profile</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <i class="fa fa-power-off"></i> <span>Logout</span>
+                            </a>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <i class="fa fa-external-link"></i> <span>Neverdone Admin</span>
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <ul class="list-inline menu-left mb-0">
+                    <li class="float-left">
+
+                        <!-- Side Bar Shrinker -->
+                        <button class="button-menu-mobile open-left">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                    </li>
+
+                    <!-- Date Picker-->
+                    <li class="float-left">
+                        <form class="form-inline">
+
+                            <label for="selectWeekAndMonth" style="color:white">Select the  month and week : Now is Week @week</label>
+                            <select class="form-control" id="selMonth" style="margin-left:20px" name="singlemonthpicker">
+                                <option value="January">January</option>
+                                <option value="Febuary">Febuary</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                            <select class="form-control" id="_singleweekpicker" style="margin-left:10px" name="singleweekpicker">
+                                <option value="1">Week 1</option>
+                                <option value="2">Week 2</option>
+                                <option value="3">Week 3</option>
+                                <option value="4">Week 4</option>
+                                <option value="5">This Month</option>
+
+                            </select>
+                            <button type="button" class="btn btn-primary" id="_submitweek" style="margin-left:20px" onclick="weekSubmitted()">Submit</button>
+
+                        </form>
+                    </li>
+
+
+                </ul>
+
+
+            </nav>
+
+        </div>
+        <!-- End Navigation -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- SIDE BAR MENU
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- Left Sidebar -->
+        <div class="left main-sidebar">
+
+            <div class="sidebar-inner leftscroll">
+
+                <div id="sidebar-menu">
+
+                    <ul>
+
+                        <li class="submenu">
+                            <a class="active" href='@Url.Action("DashboardManager", "Dashboard")'>
+                                <i class="fa fa-fw fa-bars"></i><span> Dashboard </span>
+                            </a>
+                        </li>
+
+                        <!-- TODO : cshtml for all dashboards -->
+                        <li class="submenu">
+
+                            <a class="pro" href="#">
+                                <i class="fa fa-fw fa-area-chart"></i> <span> Charts </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a href='@Url.Action("DashboardOperator", "Dashboard")'>Operator</a></li>
+
+                                @if ((int)@ViewData["status"] == 2)
+                                {
+                                    <li><a href='@Url.Action("DashboardManager", "Dashboard")'>Manager</a></li>
+                                }
+
+                            </ul>
+
+                        </li>
+
+
+                        <!-- TODO : cshtml for all financial statements -->
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-file-text-o"></i> <span> Report </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a class="active" href='@Url.Action("JournalTransaction", "Report", new { id = @ViewData["status"]})'>Journal Transaction</a></li>
+                                <li><a class="active" href='@Url.Action("GeneralLedger", "Report", new { id = @ViewData["status"]})'>General Ledger</a></li>
+                                <li><a class="active" href='@Url.Action("IncomeStatement", "Report", new { id = @ViewData["status"]})'>Income Statement</a></li>
+                                <li><a class="active" href='@Url.Action("ReconcilationSheet", "Report", new { id = @ViewData["status"]})'>Reconcilation Sheet</a></li>
+                                <li><a class="active" href='@Url.Action("InventoryStockCard", "Report", new { id = @ViewData["status"]})'>Inventory Stock Card</a></li>
+                                <li><a class="active" href='@Url.Action("PurchaseOrder", "Report", new { id = @ViewData["status"]})'>Purchase Order</a></li>
+                                <li><a class="active" href='@Url.Action("Invoice", "Report", new { id = @ViewData["status"]})' >Invoice</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href='@Url.Action("Index", "TruckSearch", new { id = @ViewData["status"]})'>
+                                <i class="fa fa-truck"></i><span> Truck History</span>
+                            </a>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-image"></i> <span> Images and Galleries </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="media-fancybox.html">
+                                        <span class="label radius-circle bg-danger float-right">cool</span> Fancybox
+                                    </a>
+                                </li>
+                                <li><a href="media-masonry.html">Masonry</a></li>
+                                <li><a href="media-lightbox.html">Lightbox</a></li>
+                                <li><a href="media-owl-carousel.html">Owl Carousel</a></li>
+                                <li><a href="media-image-magnifier.html">Image Magnifier</a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+
+        <!-- End Sidebar -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- CONTENT -->
+        <!-- ------------------------------------------------------------------------------ -->
+
+        <div class="content-page">
+
+            <!-- Start content -->
+            <div class="content">
+
+                <div class="container-fluid">
+
+                    <!-- Searcher -->
+                    @*<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                            <div>
+                                <h6 style="color: white"> Search for Trucks History </h6>
+                            </div>
+                            <div>
+                                <form class="form-inline" action="/action_page.php" style="margin-left: 10px">
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                                    <button class="btn btn-success" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </nav>*@
+
+                    <!-- TODO : Date Selectable -->
+                    <!-- TODO : edit icon -->
+                    <!-- TODO : sub text -->
+                    <!-- TODO : sub text -->
+                    <!-- TODO : Generate Number -->
+                    <!----------------------------------------------------------->
+                    <!-- Layer 1 : SUPER KPI -->
+                    <!----------------------------------------------------------->
+
+                    <div class="row">
+                        <!-- Diesel Total Sale-->
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+                            <div class="card-box noradius noborder bg-danger">
+                                <i class="fa fa-database float-right"></i>
+                                <h6 class="text-dark text-uppercase m-b-20">DIESEL SOLD THIS WEEK (l)</h6>
+                                <h1 class="m-b-20 text-white counter">
+                                    @if (week != "5")
+                                    {@String.Format("{0:n}", @ViewData["DIESEL_SOLD_WEEK_" + week]);
+                                }
+                                else if (week == "5")
+                                {@String.Format("{0:n}", @ViewData["DIESEL_SOLD_MONTH_1"]);}
+                                </h1>
+                                <span class="text-white">Litre in this week</span>
+                            </div>
+                        </div>
+                        <!-- Gasohol95 Total Sale-->
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+                            <div class="card-box noradius noborder bg-warning">
+                                <i class="fa fa-database float-right"></i>
+                                <h6 class="text-dark text-uppercase m-b-20">GASOHOL95 SOLD THIS WEEK</h6>
+                                <h1 class="m-b-20 text-white counter">
+                                    @if (week != "5")
+                                    {@String.Format("{0:n}", @ViewData["GASOHOL95_SOLD_WEEK_" + week]);}
+                                else if (week == "5")
+                                { @String.Format("{0:n}", @ViewData["GASOHOL95_SOLD_MONTH_1"]);}
+
+
+                                </h1>
+                                <span class="text-white">Litre in this week</span>
+                            </div>
+                        </div>
+                        <!-- Total Utilization -->
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+                            <div class="card-box noradius noborder bg-success">
+                                <i class="fa fa-clock-o float-right"></i>
+                                <h6 class="text-dark text-uppercase m-b-20">TOTAL UTILIZATION</h6>
+                                <h1 class="m-b-20 text-white counter">
+                                @if (week != "5"){ @ViewData["TOTAL_UTILIZATION_WEEK_" + week]}
+                                else if (week == "5"){ @ViewData["TOTAL_UTILIZATION_MONTH_1"] }
+                                </h1>
+                                <span class="text-white">% in this week</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- end row -->
+                    <!----------------------------------------------------------->
+                    <!-- Layer 2 : Secondary - Utilization & Avg. Cycle Time-->
+                    <!----------------------------------------------------------->
+                    <!-- AVG. Flow Rate & Failure Rate -->
+                    <div class="row">
+                        <!-- Avg. Diesel Flow Rate !-->
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h3><i class="fa fa-wrench"></i>Schedule Utilization</h3>
+                                    of all stations in this week
+                                </div>
+
+                                <!-- DATA -->
+                                <div class="card-body">
+                                    <canvas id="comboBarLineChart"></canvas>
+                                </div>
+
+                                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                            </div><!-- end card-->
+                        </div>
+
+                        <!-- Number of Failure !-->
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h3><i class="fa fa-table"></i>Avg. Cycle Time</h3>
+                                    of all stations in this week
+                                </div>
+
+                                <div class="card-body">
+                                    <canvas id="barChart"></canvas>
+                                </div>
+                                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                            </div><!-- end card-->
+                        </div>
+                    </div>
+                    <!-- end row -->
+                    <!----------------------------------------------------------->
+                    <!-- Layer 3 : Third - Misc -->
+                    <!----------------------------------------------------------->
+                    <div class="row">
+                        <!-- Total Truck In-->
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card-box noradius noborder" style="background-color: #efefef">
+                                <i class="fa fa-truck float-left text-danger" style="margin-right:20px"></i>
+                                <h5 class="text-uppercase m-b-20" style="color: #190036">TOTAL TRUCK IN</h5>
+                                <!-- week 5 == month !!!! -->
+                                <h1 class="m-b-20 counter" style="color: #000000">
+                                    @if (week != "5"){ @ViewData["TOTAL_TRUCK_IN_WEEK_" + week] }
+                                else if (week == "5"){ @ViewData["TOTAL_TRUCK_IN_MONTH_1"] }
+
+                                </h1>
+                                <span style="color: #000000">In this week</span>
+                            </div>
+                        </div>
+                        <!-- Total Truck Out-->
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card-box noradius noborder" style="background-color: #efefef">
+                                <i class="fa fa-truck float-left text-success" style="margin-right:20px"></i>
+                                <h5 class="text-uppercase m-b-20" style="color: #190036">TOTAL TRUCK OUT</h5>
+                                <!-- week 5 == month !!!! -->
+                                <h1 class="m-b-20 counter" style="color: #000000">
+                                    @if (week != "5"){ @ViewData["TOTAL_TRUCK_OUT_WEEK_" + week] }
+                                else if (week == "5"){ @ViewData["TOTAL_TRUCK_OUT_MONTH_1"]}
+                                </h1>
+                                <span style="color: #000000">In this week</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+
+
+
+
+            </div>
+            <!-- END container-fluid -->
+
+        </div>
+        <!-- END content -->
+
+    </div>
+    <!-- END content-page -->
+
+    <div>
+        <footer class="footer">
+            <span class="text-right">
+                Copyright <a target="_blank" href="#">Neverdone Company</a>
+            </span>
+            <span class="float-right">
+                Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Neverdone</b></a>
+            </span>
+        </footer>
+
+    </div>
+    <!-- END main -->
+    <!-- ------------------------------------------------------------------------------ -->
+    <!-- JAVASCRIPT -->
+    <!-- ------------------------------------------------------------------------------ -->
+
+    <script src="~/Content/vendor_dashboard/js/modernizr.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/moment.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/popper.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/bootstrap.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/detect.js"></script>
+    <script src="~/Content/vendor_dashboard/js/fastclick.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.blockUI.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.nicescroll.js"></script>
+
+    <!-- App js -->
+    <script src="~/Content/vendor_dashboard/js/pikeadmin.js"></script>
+
+    <!-- BEGIN Java Script for this page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Counter-Up-->
+    <script src="~/Content/vendor_dashboard/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="~/Content/vendor_dashboard/plugins/counterup/jquery.counterup.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // data-tables
+            $('#example1').DataTable();
+
+            // counter-up
+            $('.counter').counterUp({
+                delay: 10,
+                time: 600
+            });
+        });
+    </script>
+
+    <script>
+        // TODO : Generate Random Number for Avg. Flow Rate (Flow Rate in each hour)
+        // Avg. Diesel Flow Rate
+        // comboBarLineChart
+        var ctx1 = document.getElementById("comboBarLineChart").getContext('2d');
+        var comboBarLineChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                //labels: ["Bay 1"],
+                datasets: [{
+                    label: 'Sales Office',
+                    data: [
+                        @if (week != "5") {@ViewData["UTIL_SALE_OFFICE_DAY_" + week]}
+                                    else if (week == "5"){ @ViewData["UTIL_SALE_OFFICE_MONTH_1"]}
+
+                    ],                                      
+                    backgroundColor: ['rgba(255, 79, 75,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Weigh Station (IN)',
+                        data: [@if (week != "5") {@ViewData["UTIL_WEIGH_IN_DAY_" + week]}
+                                    else if (week == "5"){ @ViewData["UTIL_WEIGH_IN_MONTH_1"]}
+                    ],
+                    backgroundColor: ['rgba(255, 123, 56,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Bay (DIESEL)',
+                        data: [@if (week != "5") {@ViewData["UTIL_DIESEL_BAY_LOADING_DAY_" + week]}
+                                    else if (week == "5"){ @ViewData["UTIL_DIESEL_BAY_LOADING_MONTH_1"]}
+                        ],
+                    backgroundColor: ['rgba(255, 189, 82,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Bay (GASOHOL95)',
+                        data: [@if (week != "5") {@ViewData["UTIL_GASOHOL95_BAY_LOADING_DAY_" + week]}
+                                    else if (week == "5"){ @ViewData["UTIL_GASOHOL95_BAY_LOADING_MONTH_1"]}
+                        ],
+                    backgroundColor: ['rgba(100, 184, 73,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Weigh Station (OUT)',
+                        data: [@if (week != "5") {@ViewData["UTIL_WEIGH_OUT_DAY_" + week]}
+                                    else if (week == "5"){ @ViewData["UTIL_WEIGH_OUT_MONTH_1"]}
+                        ],
+                    backgroundColor: ['rgba(77, 200, 217,1)'],
+                    borderWidth: 1
+                }
+
+                ],
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        // TODO : Generate Random Number of failure for 30 days
+        // barChart
+        var ctx2 = document.getElementById("barChart").getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                //labels: ["Bay 1"],
+                datasets: [{
+                    label: 'Sales Office',
+                    data: [
+                            @if (week != "5") {@ViewData["CYC_SALE_OFFICE_WEEK_" + week]}
+                    else if (week == "5"){ @ViewData["CYC_SALE_OFFICE_MONTH_1"]},
+                        ],
+                    backgroundColor: ['rgba(255, 79, 75,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Weigh Station (IN)',
+                        data: [@if (week != "5") {@ViewData["CYC_WEIGH_IN_WEEK_" + week]}
+                    else if (week == "5"){ @ViewData["CYC_WEIGH_IN_MONTH_1"]},
+                        ],
+                    backgroundColor: ['rgba(255, 123, 56,1)'],
+                    borderWidth: 1
+                }, {
+                    label: 'Bay Loading',
+                        data: [@if (week != "5") {@ViewData["CYC_BAY_LOADING_WEEK_" + week]}
+                    else if (week == "5"){ @ViewData["CYC_BAY_LOADING_MONTH_1"]},
+                        ],
+                    backgroundColor: ['rgba(255, 189, 82,1)'],
+                    borderWidth: 1
+                },  {
+                    label: 'Weigh Station (OUT)',
+                        data: [@if (week != "5") {@ViewData["CYC_WEIGH_OUT_WEEK_" + week]}
+                    else if (week == "5"){ @ViewData["CYC_WEIGH_OUT_MONTH_1"]},
+                        ],
+                    backgroundColor: ['rgba(77, 200, 217,1)'],
+                    borderWidth: 1
+                }
+
+                ],
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+
+    </script>
+    <!-- END Java Script for this page -->
+
+    <script>
+        var weekSubmitted = function () {
+            week = document.getElementById("_singleweekpicker").value;
+            week = parseInt(week);
+            alert(week);
+
+            window.location.href = "WeekSelectorManager/" + week
+            //GET
+        }
+    </script>
+
+</body>
+
+

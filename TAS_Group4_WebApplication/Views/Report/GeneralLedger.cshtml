@@ -1,0 +1,1100 @@
+﻿
+@{
+    ViewBag.Title = "GeneralLedger";
+    ViewData["username"] = Session["username"];
+    ViewData["status"] = Session["status"];
+    Layout = "~/Views/Dashboard/_LayoutDashboard.cshtml";
+
+    var Ledger_Account_Receivable = ViewData["LEDGER_ACCOUNT_RECEIVABLE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Account_Receivable_Date = ViewData["LEDGER_ACCOUNT_RECEIVABLE_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Account_Receivable_Amount = ViewData["LEDGER_ACCOUNT_RECEIVABLE_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_Account_Payable = ViewData["LEDGER_ACCOUNT_PAYABLE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Account_Payable_Date = ViewData["LEDGER_ACCOUNT_PAYABLE_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Account_Payable_Amount = ViewData["LEDGER_ACCOUNT_PAYABLE_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_COGS = ViewData["LEDGER_COGS"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_COGS_Date = ViewData["LEDGER_COGS_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_COGS_Amount = ViewData["LEDGER_COGS_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_Depreciation = ViewData["LEDGER_DEPRECIATION_EXPENSE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Depreciation_Date = ViewData["LEDGER_DEPRECIATION_EXPENSE_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Depreciation_Amount = ViewData["LEDGER_DEPRECIATION_EXPENSE_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    // inventory debit
+    var Ledger_Inventory = ViewData["LEDGER_INVENTORY"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Inventory_Date = ViewData["LEDGER_INVENTORY_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Inventory_Amount = ViewData["LEDGER_INVENTORY_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    // inventory credit
+    var Ledger_Inventory_Cash = ViewData["LEDGER_INVENTORY_CASH"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Inventory_Cash_Date = ViewData["LEDGER_INVENTORY_CASH_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Inventory_Cash_Amount = ViewData["LEDGER_INVENTORY_CASH_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+
+    var Ledger_Salary_Wages_Expenses = ViewData["LEDGER_SALARY_WAGES_EXPENSES"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Salary_Wages_Expenses_Date = ViewData["LEDGER_SALARY_WAGES_EXPENSES_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Salary_Wages_Expenses_Amount = ViewData["LEDGER_SALARY_WAGES_EXPENSES_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_Utilities = ViewData["LEDGER_UTILITIES_EXPENSES"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Utilities_Date = ViewData["LEDGER_UTILITIES_EXPENSES_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Utilities_Amount = ViewData["LEDGER_UTILITIES_EXPENSES_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_Revenue = ViewData["LEDGER_REVENUE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Revenue_Date = ViewData["LEDGER_REVENUE_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Revenue_Amount = ViewData["LEDGER_REVENUE_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    var Ledger_Accumulated = ViewData["LEDGER_ACCUMULATED_DEPRECIATION"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Accumulated_Date = ViewData["LEDGER_ACCUMULATED_DEPRECIATION_DATE"] as List<TAS_Group4_WebApplication.Models.getData>;
+    var Ledger_Accumulated_Amount = ViewData["LEDGER_ACCUMULATED_DEPRECIATION_AMOUNT"] as List<TAS_Group4_WebApplication.Models.getData>;
+
+    // DEBIT
+    double AR_SUM = 0.0; //
+    double COGS_SUM = 0.0; //
+    double DEPR_SUM = 0.0; //
+    double INV_SUM_DEBIT = 0.0; //
+    double INV_SUM_CREDIT = 0.0; //
+    double SALARIES_WAGES_SUM = 0.0; //
+    double UTIL_SUM = 0.0; //
+                           // CREDIT
+    double REV_SUM = 0.0; //
+    double ACCUM_SUM = 0.0; // 
+    double AP_SUM = 0.0; //
+
+    double INV_FINAL = 0.0;
+
+    double FINAL_DEBIT = 0.0;
+    double FINAL_CREDIT = 0.0;
+}
+
+<h2>GeneralLedger</h2>
+
+<head>
+    <style>
+        td.details-control {
+            background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+        }
+
+        .counter {
+		font-size: 3.5rem;
+		}
+    </style>
+    <!-- END CSS for this page -->
+</head>
+
+<head>
+    <title>Denchai TAS - Manager Dashboard</title>
+</head>
+
+<body class="adminbody">
+
+
+    <div id="main">
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- TOP BAR NAVIGATION -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <div class="headerbar">
+
+            <!-- LOGO -->
+            <div class="headerbar-left">
+                <a href='@Url.Action("DashboardManager", "Dashboard")' class="logo"><img alt="Logo" src="~/Content/vendor_dashboard/images/logo.png" /> <span> Admin @ViewData["username"]: @ViewData["status"] </span></a>
+            </div>
+
+            <nav class="navbar-custom">
+
+                <ul class="list-inline float-right mb-0">
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-question-circle"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small>Help and Support</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <p class="notify-details ml-0">
+                                    <b>Do you think who the fuck you are?</b>
+                                    <span>Contact Us</span>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a title="Clcik to visit Pike Admin Website" target="_blank"
+                               href="https://www.pikeadmin.com" class="dropdown-item notify-item notify-all">
+                                <i class="fa fa-link"></i> Visit Pike Neverdone Website
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="fa fa-fw fa-bell-o"></i><span class="notif-bullet"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5><small><span class="label label-danger pull-xs-right">5</span>Alerts</small></h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar2.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Diew Koolpiruck</b>
+                                    <span>is checking your fucking work</span>
+                                    <small class="text-muted">now</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar3.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Sean</b>
+                                    <span>already checked your fucking work</span>
+                                    <small class="text-muted">12 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-faded">
+                                    <img src="~/Content/vendor_dashboard/images/avatars/avatar4.png" alt="img"
+                                         class="rounded-circle img-fluid">
+                                </div>
+                                <p class="notify-details">
+                                    <b>Aj. Pond</b>
+                                    <span>gave you full scores! HELL YEAH!</span>
+                                    <small class="text-muted">35 minutes ago</small>
+                                </p>
+                            </a>
+
+                            <!-- All-->
+                            <a href="#" class="dropdown-item notify-item notify-all">
+                                View All Alerts
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <li class="list-inline-item dropdown notif">
+                        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <img src="~/Content/vendor_dashboard/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5 class="text-overflow"><small>Hello, admin</small> </h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="pro-profile.html" class="dropdown-item notify-item">
+                                <i class="fa fa-user"></i> <span>Profile</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="#" class="dropdown-item notify-item">
+                                <i class="fa fa-power-off"></i> <span>Logout</span>
+                            </a>
+
+                            <!-- item-->
+                            <a target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item">
+                                <i class="fa fa-external-link"></i> <span>Neverdone Admin</span>
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <ul class="list-inline menu-left mb-0">
+                    <li class="float-left">
+
+                        <!-- Side Bar Shrinker -->
+                        <button class="button-menu-mobile open-left">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                    </li>
+
+                </ul>
+
+
+            </nav>
+
+        </div>
+        <!-- End Navigation -->
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- SIDE BAR MENU
+        <!-- ------------------------------------------------------------------------------ -->
+        <!-- Left Sidebar -->
+        <div class="left main-sidebar">
+
+            <div class="sidebar-inner leftscroll">
+
+                <div id="sidebar-menu">
+
+                    <ul>
+
+                        <li class="submenu">
+                            <a class="active" href='@Url.Action("DashboardManager", "Dashboard")'>
+                                <i class="fa fa-fw fa-bars"></i><span> Dashboard </span>
+                            </a>
+                        </li>
+
+                        <!-- TODO : cshtml for all dashboards -->
+                        <li class="submenu">
+
+                            <a class="pro" href="#">
+                                <i class="fa fa-fw fa-area-chart"></i> <span> Charts </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a href='@Url.Action("DashboardOperator", "Dashboard")'>Operator</a></li>
+
+                                @if ((int)@ViewData["status"] == 2)
+                                {
+                                    <li><a href='@Url.Action("DashboardManager", "Dashboard")'>Manager</a></li>
+                                }
+
+                            </ul>
+
+                        </li>
+
+
+                        <!-- TODO : cshtml for all financial statements -->
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-file-text-o"></i> <span> Report </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li><a class="active" href='@Url.Action("JournalTransaction", "Report", new { id = @ViewData["status"] })'>Journal Transaction</a></li>
+                                <li><a class="active" href='@Url.Action("GeneralLedger", "Report", new { id = @ViewData["status"] })'>General Ledger</a></li>
+                                <li><a class="active" href='@Url.Action("IncomeStatement", "Report", new { id = @ViewData["status"] })'>Income Statement</a></li>
+                                <li><a class="active" href='@Url.Action("ReconcilationSheet", "Report", new { id = @ViewData["status"] })'>Reconcilation Sheet</a></li>
+                                <li><a class="active" href='@Url.Action("InventoryStockCard", "Report", new { id = @ViewData["status"] })'>Inventory Stock Card</a></li>
+                                <li><a class="active" href='@Url.Action("PurchaseOrder", "Report", new { id = @ViewData["status"] })'>Purchase Order</a></li>
+                                <li><a class="active" href='@Url.Action("Invoice", "Report", new { id = @ViewData["status"] })'>Invoice</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href='@Url.Action("DashboardManager", "Dashboard")'>
+                                <i class="fa fa-truck"></i><span> Truck History</span>
+                            </a>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#">
+                                <i class="fa fa-fw fa-image"></i> <span> Images and Galleries </span> <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="media-fancybox.html">
+                                        <span class="label radius-circle bg-danger float-right">cool</span> Fancybox
+                                    </a>
+                                </li>
+                                <li><a href="media-masonry.html">Masonry</a></li>
+                                <li><a href="media-lightbox.html">Lightbox</a></li>
+                                <li><a href="media-owl-carousel.html">Owl Carousel</a></li>
+                                <li><a href="media-image-magnifier.html">Image Magnifier</a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+
+        <!-- End Sidebar -->
+        @*//........................................................................................................................................................................................................
+            //.DDDDDDDDDDDDDDD............OOOOOOOOOOO............... TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII......SSSSSSSSSSS.................SSSSSSSSSSS......SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDD........OOOOOOOOOOOOOOO............. TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII.....SSSSSSSSSSSSS...............SSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDDD......OOOOOOOOOOOOOOOOO............ TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII....SSSSSSSSSSSSSSS.............SSSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDDDDDDDDDDDDDD.....OOOOOOOOOOOOOOOOOOO........... TTTTTTTTTTTTTTTTT.HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSSSSSSS............SSSSSSSSSSSSSSSS...SHHHHH.......HHHHHH...IIIIII..ITTTTTTTTTTTTTTTT..
+            //.DDDDDD....DDDDDDDDD....OOOOOOOOO.OOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSS.SSSSSSSS........... SSSSSSS.SSSSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD......DDDDDDD...OOOOOOOO.....OOOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSS.....SSSSSS........... SSSSS.....SSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD.......DDDDDDD..OOOOOOO.......OOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSS..................... SSSSSS.............SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSS................... SSSSSSSS...........SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSS................ SSSSSSSSSSS........SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOOO.........OOOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII....SSSSSSSSSSSSS...............SSSSSSSSSSSSSS.....SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOO...........OOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII.....SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS....SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOO...........OOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII......SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS...SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD.DOOOOOO.........OOOOOOO...............TTTTTT.......HHHHHHHHHHHHHHHHHHH...IIIII........SSSSSSSSSSSSS...............SSSSSSSSSSSSS..SHHHHHHHHHHHHHHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII...........SSSSSSSSSS...................SSSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD........DDDDDD..OOOOOO.........OOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..............SSSSSSS.....................SSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD.......DDDDDDD..OOOOOOO.......OOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..ISSSSS.......SSSSSS......... SSSS.......SSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD......DDDDDDD...OOOOOOOO.....OOOOOOOO................TTTTTT.......HHHHHH.......HHHHHH...IIIII..ISSSSSS......SSSSSS.......... SSSSS......SSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDD....DDDDDDDDD....OOOOOOOOO.OOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSS..SSSSSSSS.......... SSSSSSS..SSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDDD.....OOOOOOOOOOOOOOOOOOO.................TTTTTT.......HHHHHH.......HHHHHH...IIIII...SSSSSSSSSSSSSSSSSS.......... SSSSSSSSSSSSSSSSS..SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDDD......OOOOOOOOOOOOOOOOO..................TTTTTT.......HHHHHH.......HHHHHH...IIIII....SSSSSSSSSSSSSSSS............SSSSSSSSSSSSSSSS...SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDDDD........OOOOOOOOOOOOOOO...................TTTTTT.......HHHHHH.......HHHHHH...IIIII.....SSSSSSSSSSSSSS..............SSSSSSSSSSSSSS....SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //.DDDDDDDDDDDDDDD............OOOOOOOOOOO.....................TTTTTT.......HHHHHH.......HHHHHH...IIIII......SSSSSSSSSSS.................SSSSSSSSSSSS.....SHHHHH.......HHHHHH...IIIIII........TTTTTT.......
+            //........................................................................................................................................................................................................*@
+
+        <div class="content-page">
+
+            <!-- Start content -->
+            <div class="content">
+
+                <div class="container-fluid">
+
+
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="breadcrumb-holder">
+                                <h1 class="main-title float-left">Ledgers</h1>
+                                <ol class="breadcrumb float-right">
+                                    <li class="breadcrumb-item">Home</li>
+                                    <li class="breadcrumb-item active">Journal Transaction</li>
+                                </ol>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                    @*//...........................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW........1111..
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW........11111..
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW.......111111..
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW......1111111..
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW......1111111..
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW.......11.1111..
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW..........1111..
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW..........1111..
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW..........1111..
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW..........1111..
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW...........1111..
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW...........1111..
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW...........1111..
+        //...........................................................*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> ACCOUNT RECEIVABLE </h2>
+                                    <h3> Ref. ID : 101</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example1" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Account_Receivable.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Account_Receivable_Date[i].Value</td>
+                                                        <td> @Ledger_Account_Receivable[i].Value</td>
+                                                        <td> @Ledger_Account_Receivable_Amount[i].Value</td>
+                                                        <td></td>
+                                                    </tr>
+
+                                                    AR_SUM = AR_SUM + Math.Round((Convert.ToDouble(@Ledger_Account_Receivable_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td class="text-white"> @AR_SUM</td>
+                                                    <td></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> ACCOUNT PAYABLE </h2>
+                                    <h3> Ref. ID : 201</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example2" class="table table-bordered table-hover display ">
+                                            <thead class="bg-danger">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @for (var i = 0; i < Ledger_Account_Payable.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Account_Payable_Date[i].Value</td>
+                                                        <td> @Ledger_Account_Payable[i].Value</td>
+                                                        <td></td>
+                                                        <td> @Ledger_Account_Payable_Amount[i].Value</td>
+
+                                                    </tr>
+
+                                                    AP_SUM = AP_SUM + Math.Round((Convert.ToDouble(@Ledger_Account_Payable_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @AP_SUM</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+                    @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW......222222....
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW......22222222...
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW..... 222..2222..
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW..... 222..2222..
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW...........2222..
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW...........22222..
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW..........22222...
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW.........22222....
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW........22222.....
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW.......22222......
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW........2222.......
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW....... 222222222..
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW....... 222222222..
+        //.............................................................*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> COST OF GOODS SOLD </h2>
+                                    <h3> Ref. ID : 501 </h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example3" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @for (var i = 0; i < Ledger_COGS.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_COGS_Date[i].Value</td>
+                                                        <td> @Ledger_COGS[i].Value</td>
+                                                        <td> @Ledger_COGS_Amount[i].Value</td>
+                                                        <td></td>
+                                                    </tr>
+
+                                                    COGS_SUM = COGS_SUM + Math.Round((Convert.ToDouble(@Ledger_COGS_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td class="text-white"> @COGS_SUM</td>
+                                                    <td></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> REVENUE </h2>
+                                    <h3> Ref. ID : 401</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example4" class="table table-bordered table-hover display ">
+                                            <thead class="bg-danger">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @for (var i = 0; i < Ledger_Revenue.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Revenue_Date[i].Value</td>
+                                                        <td> @Ledger_Revenue[i].Value</td>
+                                                        <td></td>
+                                                        <td> @Ledger_Revenue_Amount[i].Value</td>
+
+                                                    </tr>
+
+                                                    REV_SUM = REV_SUM + Math.Round((Convert.ToDouble(@Ledger_Revenue_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @REV_SUM</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+                    @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW......333333....
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW......33333333...
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW......33333333...
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW..... 333.3333...
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW..........3333...
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW..........3333....
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW.........333333...
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW...........33333..
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW............3333..
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW...... 333..3333..
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW....... 333333333..
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW........33333333...
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW.........333333....
+        //.............................................................*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> DEPRECIATION EXPENSES</h2>
+                                    <h3> Ref. ID : 502</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example5" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Depreciation.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Depreciation_Date[i].Value</td>
+                                                        <td> @Ledger_Depreciation[i].Value</td>
+                                                        <td> @Ledger_Depreciation_Amount[i].Value</td>
+                                                        <td></td>
+                                                    </tr>
+
+                                                    DEPR_SUM = DEPR_SUM + Math.Round((Convert.ToDouble(@Ledger_Depreciation_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td class="text-white"> @DEPR_SUM</td>
+                                                    <td></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> ACCUMULATED DEPRECIATION </h2>
+                                    <h3> Ref. ID : 503</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example6" class="table table-bordered table-hover display ">
+                                            <thead class="bg-danger">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Accumulated.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Accumulated_Date[i].Value</td>
+                                                        <td> @Ledger_Accumulated[i].Value</td>
+                                                        <td></td>
+                                                        <td> @Ledger_Accumulated_Amount[i].Value</td>
+
+                                                    </tr>
+
+                                                    ACCUM_SUM = ACCUM_SUM + Math.Round((Convert.ToDouble(@Ledger_Accumulated_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @ACCUM_SUM</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+                    @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW.........4444...
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW.........44444...
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW........444444...
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW........444444...
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW.......4444444...
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW.......44444444...
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW.......444.4444...
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW...... 444.4444...
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW...... 444444444..
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW...... 444444444..
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW............4444...
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW............4444...
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW............4444...
+        //.............................................................*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> INVENTORY and CASH  </h2>
+                                    <h3> Ref. ID : 102</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example7" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Inventory.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Inventory_Date[i].Value</td>
+                                                        <td> @Ledger_Inventory[i].Value</td>
+                                                        <td> @Ledger_Inventory_Amount[i].Value</td>
+                                                        <td></td>
+
+
+                                                    </tr>
+
+                                                    INV_SUM_DEBIT = INV_SUM_DEBIT + Math.Round((Convert.ToDouble(@Ledger_Inventory_Amount[i].Value)), 2);
+                                                }
+                                                @for (var i = 0; i < Ledger_Inventory_Cash.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Inventory_Cash_Date[i].Value</td>
+                                                        <td> @Ledger_Inventory_Cash[i].Value</td>
+                                                        <td></td>
+                                                        <td> @Ledger_Inventory_Cash_Amount[i].Value</td>
+
+                                                    </tr>
+
+                                                    INV_SUM_CREDIT = INV_SUM_CREDIT + Math.Round((Convert.ToDouble(@Ledger_Inventory_Cash_Amount[i].Value)), 2);
+                                                }
+                                                @{INV_FINAL = INV_SUM_CREDIT - INV_SUM_DEBIT;}
+
+                                                <tr class="bg-warning">
+                                                    <td></td>
+                                                    <td class="text-white"> </td>
+                                                    <td class="text-white"> @INV_SUM_DEBIT</td>
+                                                    <td class="text-white"> @INV_SUM_CREDIT</td>
+                                                </tr>
+                                                <tr class="bg-dark">
+                                                    <td class="text-white"></td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @INV_FINAL</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+
+
+                    @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW......55555555..
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW......555555555..
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW......5555.......
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW......5555.......
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW......5555555....
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW.......55555555...
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW...... 555.55555..
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW............5555..
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW............5555..
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW............5555..
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW....... 555.55555..
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW........55555555...
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW.........555555....*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> SALARIES and WAGES EXPENSES  </h2>
+                                    <h3> Ref. ID : 504</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example8" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Salary_Wages_Expenses.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Salary_Wages_Expenses_Date[i].Value</td>
+                                                        <td> @Ledger_Salary_Wages_Expenses[i].Value</td>
+                                                        <td></td>
+                                                        <td> @Ledger_Salary_Wages_Expenses_Amount[i].Value</td>
+
+                                                    </tr>
+
+                                                    SALARIES_WAGES_SUM = SALARIES_WAGES_SUM + Math.Round((Convert.ToDouble(@Ledger_Salary_Wages_Expenses_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @SALARIES_WAGES_SUM</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+
+                    @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW.......66666....
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW......66666666...
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW......6666.6666..
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW..... 666........
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW..... 6666666....
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW...... 66666666...
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW...... 666666666..
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW...... 666..6666..
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW...... 666..6666..
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW...... 666..6666..
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW........666666666..
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW........66666666...
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW.........666666....
+        //.............................................................*@
+
+                    <!-- start row -->
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h2><i class="fa fa-table"></i> UTILITIES EXPENSES  </h2>
+                                    <h3> Ref. ID : 505</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example9" class="table table-bordered table-hover display ">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Account Title and Explanation</th>
+                                                    <th>Debit (฿)</th>
+                                                    <th>Credit (฿)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Ledger_Utilities.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td> @Ledger_Utilities_Date[i].Value</td>
+                                                        <td> @Ledger_Utilities[i].Value</td>
+                                                        <td> @Ledger_Utilities_Amount[i].Value</td>
+                                                        <td></td>
+                                                    </tr>
+
+                                                    UTIL_SUM = UTIL_SUM + Math.Round((Convert.ToDouble(@Ledger_Utilities_Amount[i].Value)), 2);
+                                                }
+                                                <tr class="bg-dark">
+                                                    <td>z</td>
+                                                    <td class="text-white"> TOTAL (฿)</td>
+                                                    <td></td>
+                                                    <td class="text-white"> @UTIL_SUM</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                    </div>
+
+        @*//.............................................................
+        //.RRRRRRRRRR.....OOOOOOO...OOWWW..WWWWW...WWWW.... 777777777..
+        //.RRRRRRRRRRR...OOOOOOOOOO..OWWW..WWWWW..WWWW..... 777777777..
+        //.RRRRRRRRRRR..OOOOOOOOOOOO.OWWW..WWWWWW.WWWW..........7777...
+        //.RRRR...RRRRR.OOOOO..OOOOO.OWWW.WWWWWWW.WWWW..........7777...
+        //.RRRR...RRRRRROOOO....OOOOOOWWW.WWWWWWW.WWWW.........7777....
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWWWWWW.WWW.........77777....
+        //.RRRRRRRRRRR.ROOO......OOOO.WWWWWWW.WWWWWWW.........7777.....
+        //.RRRRRRRR....ROOO......OOOO.WWWWWWW.WWWWWWW.........7777.....
+        //.RRRR.RRRR...ROOOO....OOOOO.WWWWWWW.WWWWWWW........7777......
+        //.RRRR..RRRR...OOOOO..OOOOO..WWWWWWW.WWWWWWW........7777......
+        //.RRRR..RRRRR..OOOOOOOOOOOO...WWWWW...WWWWW.........7777......
+        //.RRRR...RRRRR..OOOOOOOOOO....WWWWW...WWWWW.........7777......
+        //.RRRR....RRRR....OOOOOO......WWWWW...WWWWW.........7777......
+        //.............................................................*@
+
+                    @{ 
+                        // FINAL CALCULATION DEBIT : CREDIT
+
+                        FINAL_DEBIT = AR_SUM + COGS_SUM + DEPR_SUM + SALARIES_WAGES_SUM + UTIL_SUM;
+                        FINAL_CREDIT = REV_SUM + INV_FINAL + ACCUM_SUM + AP_SUM;
+
+                    }
+                         
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-6">
+                            
+
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h3><i class="fa fa-square-o text-success"></i> TOTAL DEBIT</h3>
+                                </div>
+                                <div class="card-body bg-success">
+                                    <span class="counter text-white">@FINAL_DEBIT ฿</span>
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h3><i class="fa fa-square-o text-danger"></i> TOTAL CREDIT</h3>
+                                </div>
+                                <div class="card-body bg-danger">
+                                    <span class="counter text-white">@FINAL_CREDIT ฿</span>
+                                </div>
+                            </div><!-- end card-->
+                        </div>
+
+                        
+                    </div>
+
+
+
+                    <!-- END container-fluid -->
+
+                </div>
+                <!-- END content -->
+
+            </div>
+            <!-- END content-page -->
+
+            <footer class="footer">
+                <span class="text-right">
+                    Copyright <a target="_blank" href="#">Your Website</a>
+                </span>
+                <span class="float-right">
+                    Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+                </span>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- END main -->
+
+
+
+    <div>
+        <footer class="footer">
+            <span class="text-right">
+                Copyright <a target="_blank" href="#">Neverdone Company</a>
+            </span>
+            <span class="float-right">
+                Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Neverdone</b></a>
+            </span>
+        </footer>
+
+    </div>
+    <!-- END main -->
+    <!-- ------------------------------------------------------------------------------ -->
+    <!-- JAVASCRIPT -->
+    <!-- ------------------------------------------------------------------------------ -->
+
+    <script src="~/Content/vendor_dashboard/js/modernizr.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/moment.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/popper.min.js"></script>
+    <script src="~/Content/vendor_dashboard/js/bootstrap.min.js"></script>
+
+    <script src="~/Content/vendor_dashboard/js/detect.js"></script>
+    <script src="~/Content/vendor_dashboard/js/fastclick.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.blockUI.js"></script>
+    <script src="~/Content/vendor_dashboard/js/jquery.nicescroll.js"></script>
+
+    <!-- App js -->
+    <script src="~/Content/vendor_dashboard/js/pikeadmin.js"></script>
+
+    <!-- BEGIN Java Script for this page -->
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        // START CODE FOR BASIC DATA TABLE
+        $(document).ready(function () {
+            $('#example1').DataTable();
+            $('#example2').DataTable();
+            $('#example3').DataTable();
+            $('#example4').DataTable();
+            $('#example5').DataTable();
+            $('#example6').DataTable();
+            $('#example7').DataTable();
+            $('#example8').DataTable();
+            $('#example9').DataTable();
+        });
+        // END CODE FOR BASIC DATA TABLE
+        // END CODE Individual column searching (text inputs) DATA TABLE
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.counter').counterUp({
+                delay: 10,
+                time: 1000
+            });
+        });
+    </script>
+    <!-- END Java Script for this page -->
+
+
+</body>
